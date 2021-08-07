@@ -18,6 +18,8 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        textField.delegate = self
+        
         let homePage = "https://www.apple.com/ru/"
         let url = URL(string: homePage)
         let request = URLRequest(url: url!)
@@ -38,3 +40,14 @@ class ViewController: UIViewController {
     }
 }
 
+extension ViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        let urlString = textField.text!
+        let url = URL(string: urlString)!
+        let request = URLRequest(url: url)
+        
+        webView.load(request)
+        
+        return true
+    }
+}
