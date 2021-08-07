@@ -19,6 +19,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         textField.delegate = self
+        webView.navigationDelegate = self
         
         let homePage = "https://www.apple.com/ru/"
         let url = URL(string: homePage)
@@ -31,8 +32,15 @@ class ViewController: UIViewController {
     }
 
     @IBAction func backButtonAction(_ sender: UIButton) {
+        if webView.canGoBack {
+            webView.goBack()
+        }
     }
+    
     @IBAction func forwardButtonAction(_ sender: UIButton) {
+        if webView.canGoForward {
+            webView.goForward()
+        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -40,7 +48,7 @@ class ViewController: UIViewController {
     }
 }
 
-extension ViewController: UITextFieldDelegate {
+extension ViewController: UITextFieldDelegate, WKNavigationDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         let urlString = textField.text!
         let url = URL(string: urlString)!
@@ -48,6 +56,17 @@ extension ViewController: UITextFieldDelegate {
         
         webView.load(request)
         
+        textField.resignFirstResponder()
+        
         return true
+    }
+    
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        
+        textField.text = webView.url?.absoluteString
+        
+        backButton.isEnabled = webView.canGoBack
+        forwardButton.isEnabled = webView.canGoForward
+        
     }
 }
