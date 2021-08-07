@@ -18,8 +18,11 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let url = URL(string: "https://www.apple.com/ru/")
+        let homePage = "https://www.apple.com/ru/"
+        let url = URL(string: homePage)
         let request = URLRequest(url: url!)
+        
+        textField.text = homePage
         
         webView.load(request)
         webView.allowsBackForwardNavigationGestures = true
